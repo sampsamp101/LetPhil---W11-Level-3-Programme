@@ -24,5 +24,5 @@ export const ProductCard = ({product}: { product: Product}) => {
                     }
             </div>
         </>
-    )
+    ) 
 }
