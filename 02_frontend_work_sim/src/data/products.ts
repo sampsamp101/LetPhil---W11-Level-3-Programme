@@ -319,3 +319,5 @@ export const products: Product[] = [
     "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/kiwi/thumbnail.webp"
   }
 ];
+
+

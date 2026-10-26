@@ -11,3 +11,4 @@ export type Product = {
   brand?: string; // some products don't have a brand
   thumbnail: string;
 };
+
