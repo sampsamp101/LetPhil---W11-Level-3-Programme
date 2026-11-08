@@ -6,12 +6,10 @@ export const StatsBar = ({products}: {products:Product[]}) => {
         return acc + currentProduct.stock;
     }, 0)
 
-
     const total_inventory_val = products.reduce((acc, currentProduct)=>{
         return acc + currentProduct.price;
     }, 0);
 
-    // 1. Create the formatter object
     const price_formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -30,28 +28,28 @@ export const StatsBar = ({products}: {products:Product[]}) => {
 
     return (
     <>
-    <div className="grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2 lg:grid-cols-4 px-8 mt-2 mb-8">
-         <div className="flex flex-col w-64 max-w-sm rounded-lg border border-0.5">
+    <div className="grid grid-cols-1 gap-4 md:gap-10 md:grid-cols-2 lg:grid-cols-4 px-8 mt-2 mb-8">
+         <div className="flex flex-col w-64 max-w-sm rounded-lg border border-0.5 border-slate-300 bg-white text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                 <p className="m-1.5 inline-flex font-bold ml-4">UNITS IN STOCK</p>
                 <p className = "m-1.5 inline-flex ml-4">{new Intl.NumberFormat().format(total_units)}</p>
          </div>
 
-        <div className="flex flex-col w-64 max-w-sm rounded-lg border border-0.5">
+        <div className="flex flex-col w-64 max-w-sm rounded-lg border border-0.5 border-slate-300 bg-white text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                 <p className="m-1.5 inline-flex font-bold ml-4">INVENTORY VALUE</p>
                 <p className = "m-1.5 inline-flex ml-4">{moneyFormat}</p>                
          </div>
 
-         <div className="flex flex-col w-64 max-w-sm rounded-lg border border-0.5">
+         <div className="flex flex-col w-64 max-w-sm rounded-lg border border-0.5 border-slate-300 bg-white text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                 <p className="m-1.5 inline-flex font-bold ml-4">AVERAGE RATING</p>
                 <p className = "flex inline-flex items-center font-bold m-1.5 gap-2 ml-4">
-                    <p className = "text-lg">★</p>
+                    <p className = "text-lg text-amber-500">★</p>
                     {avgRating}
                 </p>
          </div>
 
-         <div className="flex flex-col w-64 max-w-sm rounded-lg border border-0.5">
+         <div className="flex flex-col w-64 max-w-sm rounded-lg border border-0.5 border-slate-300 bg-white text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                 <p className="m-1.5 inline-flex font-bold ml-4">LOW STOCK</p>
-                <p className = "font-bold m-1.5 inline-flex text-amber-500 text-2xl ml-4">{lowStockProducts} products</p>
+                <p className = "font-bold m-1.5 inline-flex text-amber-600 dark:text-amber-400 text-2xl ml-4">{lowStockProducts} products</p>
          </div>
 
     </div>
