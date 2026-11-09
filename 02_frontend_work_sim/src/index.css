@@ -1,3 +1,31 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+.spinner {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 12px; padding: 48px; color: #94a3b8; font-size: 0.85rem;
+}
+
+.spinner.hidden { display: none; }
+
+.spin {
+  width: 36px; height: 36px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: #38bdf8;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-box {
+  background-color: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 12px; padding: 20px 24px;
+  margin: 20px 28px; text-align: center; color: #f87171;
+}
+.error-box.hidden { display: none; }
+
+.error-box p { font-size: 0.9rem; }

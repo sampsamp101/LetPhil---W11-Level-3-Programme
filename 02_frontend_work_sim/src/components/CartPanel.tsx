@@ -9,7 +9,7 @@ type cartType = {
 }
 
 export const CartPanel = ({ numberCart, cartItems, setSavedCart}: cartType) => {
-    
+
     function handleDelete(productId: number){
         const productExists = cartItems.some((items) => (items.product.id === productId))
         if (productExists){
