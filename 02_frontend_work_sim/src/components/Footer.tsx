@@ -1,11 +1,10 @@
-
 import type { Footerstrap } from "../types/footer";
 
 type typeSetTheme = {
   themeMode: "light" | "dark",
 }
 
-export const Footer = ({ company }: Footerstrap, {themeMode}:typeSetTheme) => (
+export const Footer = ({ company, themeMode }: Footerstrap & typeSetTheme) => (
   <footer
     className={`mt-3 w-full border-t ${
       themeMode === "dark"

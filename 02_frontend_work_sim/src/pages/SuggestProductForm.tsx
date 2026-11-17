@@ -15,19 +15,14 @@ export const SuggestProductForm = ({ cartItems: _cartItems }: { cartItems: CartI
         return product.category;
     }))];
 
-
     function handleSubmit(e: React.SubmitEvent<HTMLFormElement>){
         e.preventDefault();
-
         if (!name.trim() || !reason.trim()){
             setShowError(true);
             return;
         }
-        
         const newRecord: SuggestionLogType= {productName: name.trim(), category: category.trim(), suggestionInput: reason.trim()}
-        
         setSuggestionHistory((prev) => [...prev, newRecord]);
-
         setName("");
         setReason("");
         setCategory("");

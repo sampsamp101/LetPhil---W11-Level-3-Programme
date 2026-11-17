@@ -2,6 +2,7 @@ import dark from "../public/dark.png";
 import light from "../public/light.png";
 import logo from "../public/favicon.svg";
 import { useState, useEffect } from "react";
+import { Link, NavLink } from "react-router";
 
 type typeSetTheme = {
   themeMode: "light" | "dark",
@@ -11,15 +12,13 @@ type typeSetTheme = {
 type NavbarProps = typeSetTheme & {
   favouriteCounts: number,
   cartItems: number,
-  onClickCartPopup: React.Dispatch<React.SetStateAction<boolean>>;
-  setPopupForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function handletheme({themeMode, onChangeClickTheme}: typeSetTheme){
   onChangeClickTheme((themeMode === "light") ? "dark" : "light");
 }
 
-export const Navbar = ({ themeMode, onChangeClickTheme, favouriteCounts, cartItems, onClickCartPopup, setPopupForm}: NavbarProps) => {
+export const Navbar = ({ themeMode, onChangeClickTheme, favouriteCounts, cartItems}: NavbarProps) => {
 
       const [promotionNum, setPromotionNum] = useState(0);
       const [closedPromotion, setClosedPromotion] = useState(false);
@@ -86,35 +85,46 @@ export const Navbar = ({ themeMode, onChangeClickTheme, favouriteCounts, cartIte
             > 
               <span className="flex items-center gap-3">
                 <img src={logo} alt="Company image"/>
-                <a href="/" className={`text-2xl font-bold ${themeMode === "dark" ? "text-slate-100" : "text-gray-900"}`}>
+                <Link to="/" className={`text-2xl font-bold ${themeMode === "dark" ? "text-slate-100" : "text-gray-900"}`}>
                   SummitGear Market
-                </a>
+                </Link>
               </span>
               
               <span className="flex items-center gap-2">
               <ul className={`flex items-center gap-6 text-sm font-medium ${themeMode === "dark" ? "text-slate-200" : "text-gray-700"}`}>
+            
                 <li>
-                    <button className="hover:text-blue-600 dark:hover:text-blue-300" onClick={()=> setPopupForm((formPopup)=>(!formPopup) )}>
+                    <NavLink 
+                    to="/form"
+                    className="hover:text-blue-600 dark:hover:text-blue-300"
+                    >
                       Shop
-                    </button>
+                      </NavLink>
                 </li>
 
                 <li>
-                  <button className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-300">
+                  <NavLink
+                    to="/favorites"
+                    className={({ isActive }) =>
+                      `flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-300 ${isActive ? "text-blue-600 dark:text-blue-300" : ""}`
+                    }
+                  >
                       Favourites
                       <span className={`border-1 rounded-xl px-2 ${themeMode === "dark" ? "border-slate-500" : "border-slate-300"}`}>
                           {favouriteCounts}
                       </span>
-                  </button>
+                  </NavLink>
                 </li>
 
                 <li>
-                  <button onClick={()=> onClickCartPopup((cartPopUp)=> (!cartPopUp))}className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-300">
+                  <NavLink
+                  to="/cart"
+                    className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-300">
                       Cart
                         <span className={`border-1 rounded-xl px-2 ${themeMode === "dark" ? "border-slate-500" : "border-slate-300"}`}>
                           {cartItems}
                         </span>
-                  </button>       
+                  </NavLink>
                 </li>
               </ul>
               

@@ -6,9 +6,13 @@ type cartType = {
     numberCart: number,
     cartItems: CartItem[],
     setSavedCart: React.Dispatch<React.SetStateAction<CartItem[]>>,
+    asPage?: boolean, // true = full-page layout (CartPage), false = floating popup
 }
 
-export const CartPanel = ({ numberCart, cartItems, setSavedCart}: cartType) => {
+const popupClasses = "fixed top-28 right-6 z-50 w-96 max-h-[70vh] overflow-y-auto rounded-xl border-2";
+const pageClasses = "mx-auto my-8 w-full max-w-3xl rounded-xl border";
+
+export const CartPanel = ({ numberCart, cartItems, setSavedCart, asPage = false }: cartType) => {
 
     function handleDelete(productId: number){
         const productExists = cartItems.some((items) => (items.product.id === productId))
@@ -70,7 +74,7 @@ export const CartPanel = ({ numberCart, cartItems, setSavedCart}: cartType) => {
     }
 
    return (
-                <div className="fixed top-28 right-6 z-50 w-96 max-h-[70vh] overflow-y-auto rounded-xl border-2 border-slate-300 bg-white px-4 py-4 text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+                <div className={`${asPage ? pageClasses : popupClasses} border-slate-300 bg-white px-4 py-4 text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100`}>
                             <h1 className="font-semibold">Your cart ({numberCart})</h1>
                 <hr className="my-4 border-gray-300 dark:border-slate-600" />
                     {(numberCart === 0) ? 
