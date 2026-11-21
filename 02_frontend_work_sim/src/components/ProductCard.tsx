@@ -2,6 +2,7 @@ import type { CartItem } from "../types/cart.ts";
 import type { Product } from "../types/product.ts";
 import heart from "../public/heart.png";
 import nonheart from "../public/non_heart.png";
+import { NavLink } from "react-router";
 
 type ProductCardProps = {
   product: Product;
@@ -46,11 +47,13 @@ export const ProductCard = ({
   return (
     <div key={product.id} className="w-fit max-w-sm rounded-lg border border-0.5 border-slate-300 bg-white text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
       <div className="relative w-64 h-64">
+      <NavLink to={`/products/${product.id}`}>
         <img
           className="h-64 w-full object-contain bg-cyan-300 rounded-tl-lg rounded-tr-lg border border-1"
           src={product.thumbnail}
           alt={product.title}
         />
+      </NavLink>
         <div className="absolute top-2 right-2">
           <button onClick={handleLikes} type="button">
             <img
@@ -62,7 +65,9 @@ export const ProductCard = ({
         </div>
       </div>
       <p className="italic m-1.5">{product.brand}</p>
-      <p className="font-bold m-1.5">{product.title}</p>
+      <NavLink to={`/products/${product.id}`}>
+        <p className="font-bold m-1.5">{product.title}</p>
+      </NavLink>
       <div className="flex w-full items-center justify-between gap-4">
         <p className="font-bold text-green-600 dark:text-green-400 m-1.5">${product.price.toFixed(2)}</p>
         <p className="italic m-1.5 text-slate-700 dark:text-slate-200">★ {product.rating}</p>

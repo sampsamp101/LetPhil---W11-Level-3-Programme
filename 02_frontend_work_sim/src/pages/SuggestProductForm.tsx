@@ -14,7 +14,6 @@ export const SuggestProductForm = ({ cartItems: _cartItems }: { cartItems: CartI
     const categoryList = [...new Set(products.map(product=>{
         return product.category;
     }))];
-
     function handleSubmit(e: React.SubmitEvent<HTMLFormElement>){
         e.preventDefault();
         if (!name.trim() || !reason.trim()){

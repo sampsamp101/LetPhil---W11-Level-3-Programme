@@ -94,12 +94,14 @@ export const Navbar = ({ themeMode, onChangeClickTheme, favouriteCounts, cartIte
               <ul className={`flex items-center gap-6 text-sm font-medium ${themeMode === "dark" ? "text-slate-200" : "text-gray-700"}`}>
             
                 <li>
-                    <NavLink 
-                    to="/form"
-                    className="hover:text-blue-600 dark:hover:text-blue-300"
+                    <NavLink
+                      to="/form"
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-300 ${isActive ? "text-blue-600 dark:text-blue-300" : ""}`
+                      }
                     >
-                      Shop
-                      </NavLink>
+                      Feedback
+                    </NavLink>
                 </li>
 
                 <li>
@@ -118,8 +120,11 @@ export const Navbar = ({ themeMode, onChangeClickTheme, favouriteCounts, cartIte
 
                 <li>
                   <NavLink
-                  to="/cart"
-                    className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-300">
+                    to="/cart"
+                    className={({ isActive }) =>
+                      `flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-300 ${isActive ? "text-blue-600 dark:text-blue-300" : ""}`
+                    }
+                  >
                       Cart
                         <span className={`border-1 rounded-xl px-2 ${themeMode === "dark" ? "border-slate-500" : "border-slate-300"}`}>
                           {cartItems}

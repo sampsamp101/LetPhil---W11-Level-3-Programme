@@ -11,6 +11,7 @@ type FavoritesPages = {
   setSavedCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
 };
 
+
 export const FavoritesPages = ({ products, favourites, setFavourites, savedCart, setSavedCart }: FavoritesPages) => {
   const filteredFavouritesProducts = products.filter((product) => favourites.includes(product.id));
 
@@ -37,3 +38,4 @@ export const FavoritesPages = ({ products, favourites, setFavourites, savedCart,
     </div>
   );
 };
+
