@@ -1,28 +1,12 @@
 import { useState } from "react";
-import type { Product } from "../types/product";
-import type { CartItem } from "../types/cart";
+import { products } from "../data/products.ts";
 import { ProductGrid } from "../components/ProductGrid.tsx";
 import { StatsBar } from "../components/StatsBar.tsx";
 import { SearchBar } from "../components/SearchBar.tsx";
 
-type HomePageProps = {
-  products: Product[];
-  favourites: number[];
-  setFavourites: React.Dispatch<React.SetStateAction<number[]>>;
-  savedCart: CartItem[];
-  setSavedCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
-};
-
-export const HomePage = ({
-  products,
-  favourites,
-  setFavourites,
-  savedCart,
-  setSavedCart,
-}: HomePageProps) => {
-  // Search is only used on the home screen, so its state lives here, not in App.
+export const HomePage = () => {
   const [search, setSearch] = useState("");
-
+  
   const filteredSearchList = products.filter((product) =>
     product.title.toLowerCase().includes(search)
   );
@@ -37,11 +21,7 @@ export const HomePage = ({
         products={products}
         searchList={filteredSearchList}
         noResult={noSearchResult}
-        favourites={favourites}
-        setFavourites={setFavourites}
-        savedCart={savedCart}
-        setSavedCart={setSavedCart}
-      />
+        />
     </>
   );
 };

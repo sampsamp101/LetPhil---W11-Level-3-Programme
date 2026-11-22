@@ -1,46 +1,23 @@
-import type { CartItem } from "../types/cart.ts";
 import type { Product } from "../types/product.ts";
 import heart from "../public/heart.png";
 import nonheart from "../public/non_heart.png";
 import { NavLink } from "react-router";
+import { useCartStore } from "../store/cartStore.ts";
+import {favouriteStore} from "../store/favouriteStore.ts"
 
 type ProductCardProps = {
   product: Product;
-  favourites: number[];
-  setFavourites: React.Dispatch<React.SetStateAction<number[]>>;
-  savedCart: CartItem[];
-  setSavedCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
 };
 
 export const ProductCard = ({ 
   product, 
-  favourites, 
-  setFavourites,
-  savedCart, 
-  setSavedCart }: ProductCardProps) => {
-  const isFavourite = favourites.includes(product.id);
+  }: ProductCardProps) => {
+  const {isFavourite, setFavourites} = favouriteStore();
 
-  const handleLikes = () => {
-    setFavourites((currentFavourites) => {
-      if (currentFavourites.includes(product.id)) {
-        return currentFavourites.filter((id) => id !== product.id);
-      }
-      return [...currentFavourites, product.id];
-    });
-  };
+  const {cartItems} =useCartStore();
+  const {addToCart} = useCartStore();
 
-  const handleSavedCart = () => {
-
-    setSavedCart((cartItems)=> {
-        const productExists = cartItems.some((items) => (items.product.id === product.id));
-        if (productExists){
-            return cartItems.map((item)=> (item.product.id === product.id) ? {...item, quantity: item.quantity + 1} : item) 
-        }
-        return [...cartItems, {product, quantity: 1}];
-    })  
-  }
-
-  const currentProduct = savedCart.find((item) => item.product.id === product.id);
+  const currentProduct = cartItems.find((item) => item.product.id === product.id);
   const currentQuantity = currentProduct?.quantity ?? 0;
   const limitedExceeded = currentQuantity >= product.stock;
 
@@ -55,10 +32,10 @@ export const ProductCard = ({
         />
       </NavLink>
         <div className="absolute top-2 right-2">
-          <button onClick={handleLikes} type="button">
+          <button onClick={() => setFavourites(product.id)} type="button">
             <img
-              src={isFavourite ? heart : nonheart}
-              alt={isFavourite ? "liked product" : "like button"}
+              src={isFavourite(product.id) ? heart : nonheart}
+              alt={isFavourite(product.id) ? "liked product" : "like button"}
               className="w-10 h-10"
             />
           </button>
@@ -81,7 +58,7 @@ export const ProductCard = ({
           </div>
         </div>
       )}
-      <button onClick={handleSavedCart} disabled={limitedExceeded} type="button" className="w-61 m-1.5 cursor-pointer">
+      <button onClick={()=> addToCart(product)} disabled={limitedExceeded} type="button" className="w-61 m-1.5 cursor-pointer">
           <p className={`border-2 rounded-xl text-slate-900 ${limitedExceeded ? "bg-gray-400 dark:bg-slate-600 dark:text-slate-200" : "bg-green-400 dark:bg-green-500"}`}>
             {
               (limitedExceeded) ? "Max in cart" : "Add to cart"

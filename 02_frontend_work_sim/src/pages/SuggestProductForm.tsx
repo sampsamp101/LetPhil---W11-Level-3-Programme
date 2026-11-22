@@ -1,11 +1,10 @@
 import { products } from "../data/products";
 import { useState } from "react";
-import type { CartItem } from "../types/cart";
 import type {SuggestionLogType} from "../types/suggestion"; 
 
 const MAX_REASON = 200;
 
-export const SuggestProductForm = ({ cartItems: _cartItems }: { cartItems: CartItem[] }) => {
+export const SuggestProductForm = () => {
     const [suggestionHistory, setSuggestionHistory] = useState<SuggestionLogType[]>([]);
     const [name, setName] = useState("");
     const [reason, setReason] = useState("");

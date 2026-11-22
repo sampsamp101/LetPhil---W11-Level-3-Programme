@@ -1,20 +1,11 @@
-import type { Product } from "../types/product";
-import type { CartItem } from "../types/cart";
+import { products } from "../data/products.ts";
 import { EmptyState } from "../components/EmptyState.tsx";
 import { ProductCard } from "../components/ProductCard.tsx";
+import { favouriteStore } from "../store/favouriteStore.ts";
 
-type FavoritesPages = {
-  products: Product[];
-  favourites: number[];
-  setFavourites: React.Dispatch<React.SetStateAction<number[]>>;
-  savedCart: CartItem[];
-  setSavedCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
-};
-
-
-export const FavoritesPages = ({ products, favourites, setFavourites, savedCart, setSavedCart }: FavoritesPages) => {
+export const FavoritesPages = () => {
+  const {favourites} = favouriteStore();
   const filteredFavouritesProducts = products.filter((product) => favourites.includes(product.id));
-
   return filteredFavouritesProducts.length === 0 ? (
     <div>
       <EmptyState message={"Your favorites are empty"} />
@@ -28,10 +19,6 @@ export const FavoritesPages = ({ products, favourites, setFavourites, savedCart,
           <ProductCard
             key={product.id}
             product={product}
-            favourites={favourites}
-            setFavourites={setFavourites}
-            savedCart={savedCart}
-            setSavedCart={setSavedCart}
           />
         ))}
       </div>

@@ -3,22 +3,14 @@ import light from "../public/light.png";
 import logo from "../public/favicon.svg";
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router";
+import { useCartStore } from "../store/cartStore";
+import { favouriteStore } from "../store/favouriteStore";
+import { themeModeStore } from "../store/layoutStore";
 
-type typeSetTheme = {
-  themeMode: "light" | "dark",
-  onChangeClickTheme: ((themeMode: string) => void),
-}
-
-type NavbarProps = typeSetTheme & {
-  favouriteCounts: number,
-  cartItems: number,
-}
-
-function handletheme({themeMode, onChangeClickTheme}: typeSetTheme){
-  onChangeClickTheme((themeMode === "light") ? "dark" : "light");
-}
-
-export const Navbar = ({ themeMode, onChangeClickTheme, favouriteCounts, cartItems}: NavbarProps) => {
+export const Navbar = () => {
+      const {cartItems} = useCartStore();
+      const {favouritesLength} = favouriteStore()
+      const {themeMode, onChangeClickTheme} = themeModeStore(); 
 
       const [promotionNum, setPromotionNum] = useState(0);
       const [closedPromotion, setClosedPromotion] = useState(false);
@@ -113,7 +105,7 @@ export const Navbar = ({ themeMode, onChangeClickTheme, favouriteCounts, cartIte
                   >
                       Favourites
                       <span className={`border-1 rounded-xl px-2 ${themeMode === "dark" ? "border-slate-500" : "border-slate-300"}`}>
-                          {favouriteCounts}
+                          {favouritesLength}
                       </span>
                   </NavLink>
                 </li>
@@ -127,13 +119,13 @@ export const Navbar = ({ themeMode, onChangeClickTheme, favouriteCounts, cartIte
                   >
                       Cart
                         <span className={`border-1 rounded-xl px-2 ${themeMode === "dark" ? "border-slate-500" : "border-slate-300"}`}>
-                          {cartItems}
+                          {cartItems.length}
                         </span>
                   </NavLink>
                 </li>
               </ul>
               
-              <button onClick={() => handletheme({ themeMode, onChangeClickTheme })}>
+              <button onClick={() => onChangeClickTheme(themeMode)}>
                 <img className ="w-12 h-12" src={(themeMode === "light") ? light: dark} alt="Theme Icon"/>
               </button>
               </span>

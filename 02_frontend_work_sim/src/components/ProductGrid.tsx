@@ -1,4 +1,3 @@
-import type { CartItem } from "../types/cart.ts";
 import type { Product } from "../types/product.ts";
 import { ProductCard } from "../components/ProductCard.tsx";
 import { EmptyState } from "./EmptyState.tsx";
@@ -8,10 +7,6 @@ type ProductGridProps = {
   categorySection?: string;
   searchList?: Product[];
   noResult: boolean;
-  favourites: number[];
-  setFavourites: React.Dispatch<React.SetStateAction<number[]>>;
-  savedCart: CartItem[];
-  setSavedCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
 };
 
 export const ProductGrid = ({
@@ -19,10 +14,6 @@ export const ProductGrid = ({
   categorySection,
   searchList,
   noResult,
-  favourites,
-  setFavourites,
-  savedCart,
-  setSavedCart
 }: ProductGridProps) => {
   if (products.length === 0 || noResult) {
     return (
@@ -36,7 +27,7 @@ export const ProductGrid = ({
     return (
       <div className="grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2 lg:grid-cols-4 px-8 mt-2 mb-8">
         {searchList.map((product) => (
-          <ProductCard key={product.id} product={product} favourites={favourites} setFavourites={setFavourites} savedCart={savedCart} setSavedCart={setSavedCart} />
+          <ProductCard key={product.id} product={product}/>
         ))}
       </div>
     );
@@ -45,7 +36,7 @@ export const ProductGrid = ({
   return (
     <div className="grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2 lg:grid-cols-4 px-8 mt-2 mb-8">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} favourites={favourites} setFavourites={setFavourites} savedCart={savedCart} setSavedCart={setSavedCart}/>
+        <ProductCard key={product.id} product={product}/>
       ))}
     </div>
   );

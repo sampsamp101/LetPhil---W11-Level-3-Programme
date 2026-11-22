@@ -42,7 +42,7 @@ export const StatsBar = ({products}: {products:Product[]}) => {
          <div className="flex flex-col w-64 max-w-sm rounded-lg border border-0.5 border-slate-300 bg-white text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                 <p className="m-1.5 inline-flex font-bold ml-4">AVERAGE RATING</p>
                 <p className = "flex inline-flex items-center font-bold m-1.5 gap-2 ml-4">
-                    <p className = "text-lg text-amber-500">★</p>
+                    <span className = "text-lg text-amber-500">★</span>
                     {avgRating}
                 </p>
          </div>

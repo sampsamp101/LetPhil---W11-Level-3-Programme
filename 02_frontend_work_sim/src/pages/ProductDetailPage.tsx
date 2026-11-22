@@ -2,31 +2,20 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import axios from "axios";
 import type { Product } from "../types/product";
-import type { CartItem } from "../types/cart";
+import { useCartStore } from "../store/cartStore";
+import { favouriteStore } from "../store/favouriteStore";
 
-type ProductDetailPageProps = {
-  favourites: number[];
-  setFavourites: React.Dispatch<React.SetStateAction<number[]>>;
-  savedCart: CartItem[];
-  setSavedCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
-};
-
-export const ProductDetailPage = ({
-  favourites,
-  setFavourites,
-  savedCart,
-  setSavedCart,
-}: ProductDetailPageProps) => {
-  // "/products/14" matched "/products/:id" → id is the string "14"
+export const ProductDetailPage = () => {
   const { id } = useParams();
-
+  const {addToCart} = useCartStore();
+  const {cartItems} =useCartStore();
+  const {setFavourites, isFavourite} = favouriteStore();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
-  // Re-runs whenever the id in the URL changes.
-  useEffect(() => {
-    let ignore = false; // stops a slow, outdated response from overwriting a newer one
+   useEffect(() => {
+    let ignore = false; 
 
     const fetchProduct = async () => {
       setLoading(true);
@@ -79,29 +68,8 @@ export const ProductDetailPage = ({
     );
   }
 
-  const isFavourite = favourites.includes(product.id);
-  const quantityInCart = savedCart.find((item) => item.product.id === product.id)?.quantity ?? 0;
+  const quantityInCart = cartItems.find((item) => item.product.id === product.id)?.quantity ?? 0;
   const maxReached = quantityInCart >= product.stock;
-
-  const toggleFavourite = () => {
-    setFavourites((current) =>
-      current.includes(product.id)
-        ? current.filter((favId) => favId !== product.id)
-        : [...current, product.id]
-    );
-  };
-
-  const addToCart = () => {
-    setSavedCart((cart) => {
-      const exists = cart.some((item) => item.product.id === product.id);
-      if (exists) {
-        return cart.map((item) =>
-          item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      return [...cart, { product, quantity: 1 }];
-    });
-  };
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-8">
@@ -147,7 +115,7 @@ export const ProductDetailPage = ({
           <div className="mt-8 flex gap-3">
             <button
               type="button"
-              onClick={addToCart}
+              onClick={()=> addToCart(product)}
               disabled={maxReached}
               className="flex-1 cursor-pointer rounded-lg bg-emerald-800 py-4 font-semibold text-white disabled:cursor-not-allowed disabled:bg-gray-400"
             >
@@ -155,10 +123,10 @@ export const ProductDetailPage = ({
             </button>
             <button
               type="button"
-              onClick={toggleFavourite}
+              onClick={()=> setFavourites(product.id)}
               className="cursor-pointer rounded-lg border border-slate-300 bg-white px-6 font-semibold text-red-600 dark:border-slate-600 dark:bg-slate-800 dark:text-red-400"
             >
-              {isFavourite ? "♥ Favorited" : "♡ Favorite"}
+              {isFavourite(product.id) ? "♥ Favorited" : "♡ Favorite"}
             </button>
           </div>
         </div>

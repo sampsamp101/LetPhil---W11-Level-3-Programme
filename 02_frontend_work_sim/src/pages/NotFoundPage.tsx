@@ -1,8 +1,6 @@
 import { Link, useLocation } from "react-router";
 
-
 export const NotFoundPage = () => {
-
     const backLink = (
         <Link to="/" className="mb-6 inline-block font-bold text-emerald-800 dark:text-emerald-400">
         ← Back to shop

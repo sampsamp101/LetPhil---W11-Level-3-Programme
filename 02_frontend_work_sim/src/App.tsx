@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState,useEffect } from 'react';
-import type { CartItem } from "./types/cart.ts";
 import type { Product } from "./types/product.ts";
 import type { ProductResponse } from "./types/productResponse.ts";
 import { SuggestProductForm } from "./pages/SuggestProductForm.tsx";
@@ -11,12 +10,14 @@ import { Routes, Route } from 'react-router';
 import {ProductDetailPage} from "./pages/ProductDetailPage.tsx"
 import { Layout } from "./pages/LayoutPage.tsx";
 import { NotFoundPage } from "./pages/NotFoundPage.tsx";
+import { useCartStore } from "./store/cartStore";  
+import { themeModeStore } from "./store/layoutStore.ts";
 
 function App(){
   const [products, setProducts] =  useState<Product[]>([])
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [favourites, setFavourites] = useState<number[]>([]);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const {cartItems} =useCartStore();
+  const {themeMode} = themeModeStore();
+
   const [loadingFetch, setLoadingFetch] = useState<boolean>(false);
   const [errorFetching, setErrorFetching] = useState<boolean>(false);
   const [retryConnection, setRetryConnection] = useState<number>(0);
@@ -59,7 +60,7 @@ function App(){
     setLoadingFetch(true);
   }, [retryConnection]);
 
-  // Only pages that use the product list wait for it — the Navbar/Footer (in Layout) always show.
+
   const withProducts = (page: React.ReactNode) =>
     loadingFetch ? (
       <div id="loading-spinner" className="spinner">
@@ -90,64 +91,38 @@ function App(){
   return (
     <main
       className={`min-h-screen ${
-        theme === "dark" ? "dark bg-gray-900 text-slate-100" : "bg-gray-50 text-slate-900"
+        themeMode === "dark" ? "dark bg-gray-900 text-slate-100" : "bg-gray-50 text-slate-900"
       }`}
     >
       <Routes>
         <Route
           element={
-            <Layout
-              themeMode={theme}
-              onChangeClickTheme={(themeMode: string) => setTheme(themeMode === "light" ? "light" : "dark")}
-              favouriteCounts={favourites.length}
-              cartItems={totalCurrentCart}
-            />
+            <Layout/>
           }
         >
           <Route
             path="/"
             element={withProducts(
-              <HomePage
-                products={products}
-                favourites={favourites}
-                setFavourites={setFavourites}
-                savedCart={cartItems}
-                setSavedCart={setCartItems}
-              />
+              <HomePage/>
             )}
           />
           <Route
             path="/products/:id"
             element={
-              <ProductDetailPage
-                favourites={favourites}
-                setFavourites={setFavourites}
-                savedCart={cartItems}
-                setSavedCart={setCartItems}
-              />
+              <ProductDetailPage/>
             }
           />
           <Route path="/form" element={<SuggestProductForm cartItems={cartItems} />} />
           <Route
             path="/favorites"
             element={withProducts(
-              <FavoritesPages
-                products={products}
-                favourites={favourites}
-                setFavourites={setFavourites}
-                savedCart={cartItems}
-                setSavedCart={setCartItems}
-              />
+              <FavoritesPages/>
             )}
           />
           <Route
             path="/cart"
             element={
-              <CartPage
-                numberCart={totalCurrentCart}
-                cartItems={cartItems}
-                setSavedCart={setCartItems}
-              />
+              <CartPage/>
             }
           />
           <Route
