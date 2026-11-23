@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import {persist, createJSONStorage} from "zustand/middleware";
+
 import { products } from "../data/products";
 import type { CartItem } from "../types/cart";
 
@@ -16,9 +18,12 @@ type cartType = {
   setTotalCurrentCart: (cartItems: CartItem[]) => void;
 }
 
-export const useCartStore = create<cartType>((set, get) => ({
+export const useCartStore = create<cartType>()(
+  persist(
+    (set, get) => ({
   cartItems: [],
   isMaxStockReached: false,
+
   setCartItems: (items) =>
     set((state) => ({
       cartItems: typeof items === "function" ? items(state.cartItems) : items,
@@ -110,10 +115,53 @@ export const useCartStore = create<cartType>((set, get) => ({
         }
         set({ totalCurrentCart: total });
     },
-}));
+    
+    }),
+    {
+      name: "cart-store-save",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (s) => ({
+        cartItems: s.cartItems,
+        totalCurrentCart: s.totalCurrentCart,
+      }),
+    },
+  ),
+);
 
 useCartStore.subscribe((state, prevState) => {
   if (state.cartItems !== prevState.cartItems) {
     state.setTotalCurrentCart(state.cartItems);
   }
 });
+
+
+
+
+
+// # 7.3 — Persist the cart, favorites and theme
+// ## Branch
+// Before starting, create your branch:
+// ```
+// git checkout -b persist-store
+// ```
+
+// ## Description
+// Refresh the page — the cart is gone. That's a bad store. Use Zustand's `persist` middleware to save state to `localStorage`.
+
+// ## Mock
+// No visual change. The difference is that the cart, favorites and theme are still there after a refresh.
+
+// ## Acceptance Criteria
+// - [ ] Cart, favorites and theme all survive a page refresh
+// - [ ] Each store uses `persist` with its own unique `name` key
+// - [ ] You can see the saved data in DevTools → Application → Local Storage
+// - [ ] Adding an item in one tab and refreshing another tab shows the same cart
+
+// ## Hints
+// ```ts
+// import { persist } from "zustand/middleware";
+
+// export const useCartStore = create<CartState>()(
+//   persist((set) => ({ /* same as before */ }), { name: "summitgear-cart" })
+// );
+// ```

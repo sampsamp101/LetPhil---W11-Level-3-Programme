@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import {persist, createJSONStorage} from "zustand/middleware";
 
 type favouriteType = {
     favourites: number[];
@@ -7,7 +8,9 @@ type favouriteType = {
     setFavourites: (productId: number) => void;
 };
 
-export const favouriteStore = create<favouriteType>((set, get) => ({
+export const favouriteStore = create<favouriteType>()(
+    persist(
+        (set,get) => ({
     favourites: [],
     favouritesLength: 0,
     setFavourites: (productId) =>
@@ -22,5 +25,19 @@ export const favouriteStore = create<favouriteType>((set, get) => ({
             };
         }),
     isFavourite: (productId) => get().favourites.includes(productId),
-}));
+    }),
+    {
+        name:"favourite-store-save", 
+        storage: createJSONStorage(()=> localStorage),
+        partialize: (s) => ({
+            favourites: s.favourites,
+            favouritesLength: s.favouritesLength,
+        }),
+    },
+    ),
 
+);
+
+
+
+ 

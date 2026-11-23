@@ -112,7 +112,7 @@ function App(){
               <ProductDetailPage/>
             }
           />
-          <Route path="/form" element={<SuggestProductForm cartItems={cartItems} />} />
+          <Route path="/form" element={<SuggestProductForm />} />
           <Route
             path="/favorites"
             element={withProducts(

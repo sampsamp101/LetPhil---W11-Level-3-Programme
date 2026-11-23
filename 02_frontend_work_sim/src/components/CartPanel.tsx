@@ -1,14 +1,10 @@
 import { useCartStore } from "../store/cartStore";
 import { EmptyState } from "./EmptyState";
-
 type cartType = {
-    // numberCart: number,
     asPage?: boolean, 
 }
-
 const popupClasses = "fixed top-28 right-6 z-50 w-96 max-h-[70vh] overflow-y-auto rounded-xl border-2";
 const pageClasses = "mx-auto my-8 w-full max-w-3xl rounded-xl border";
-
 export const CartPanel = ({asPage = false }: cartType) => {
     
     const { totalCurrentCart, cartItems, handleAddition, handleSubtraction, handleDelete, checkMaxStock } = useCartStore();
