@@ -16,6 +16,5 @@ export function groupByCategory(products: Product[]): Record<string, Product[]> 
         finalObj[category] = products.filter((product) => product.category === category.toLowerCase());
     }
 
-    console.log(finalObj);
     return finalObj;
 };

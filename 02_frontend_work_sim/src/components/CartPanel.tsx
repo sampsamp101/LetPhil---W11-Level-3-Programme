@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import { useCartStore } from "../store/cartStore";
 import { EmptyState } from "./EmptyState";
 type cartType = {
@@ -7,8 +8,8 @@ const popupClasses = "fixed top-28 right-6 z-50 w-96 max-h-[70vh] overflow-y-aut
 const pageClasses = "mx-auto my-8 w-full max-w-3xl rounded-xl border";
 export const CartPanel = ({asPage = false }: cartType) => {
     
+    const navigate = useNavigate();
     const { totalCurrentCart, cartItems, handleAddition, handleSubtraction, handleDelete, checkMaxStock } = useCartStore();
-
    return (
                 <div className={`${asPage ? pageClasses : popupClasses} border-slate-300 bg-white px-4 py-4 text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100`}>
                             <h1 className="font-semibold">Your cart ({totalCurrentCart})</h1>
@@ -64,6 +65,16 @@ export const CartPanel = ({asPage = false }: cartType) => {
                         </>
                     )
                     }
+                    {asPage && (
+                        <button
+                            type="button"
+                            disabled={totalCurrentCart === 0}
+                            onClick={() => navigate("/checkout")}
+                            className="mt-2 w-full cursor-pointer rounded-lg bg-emerald-800 py-3 font-semibold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+                        >
+                            Checkout
+                        </button>
+                    )}
                 </div>
     );
 };

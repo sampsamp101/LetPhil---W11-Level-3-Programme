@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState,useEffect } from 'react';
-import type { Product } from "./types/product.ts";
 import type { ProductResponse } from "./types/productResponse.ts";
 import { SuggestProductForm } from "./pages/SuggestProductForm.tsx";
 import { HomePage } from "./pages/HomePage.tsx";
@@ -10,11 +9,12 @@ import { Routes, Route } from 'react-router';
 import {ProductDetailPage} from "./pages/ProductDetailPage.tsx"
 import { Layout } from "./pages/LayoutPage.tsx";
 import { NotFoundPage } from "./pages/NotFoundPage.tsx";
+import { CheckoutPage } from "./pages/CheckoutPage.tsx";
 import { useCartStore } from "./store/cartStore";  
 import { themeModeStore } from "./store/layoutStore.ts";
+import { OrderConfirmationPage } from "./pages/OrderConfirmation.tsx";
 
 function App(){
-  const [products, setProducts] =  useState<Product[]>([])
   const {cartItems} =useCartStore();
   const {themeMode} = themeModeStore();
 
@@ -53,13 +53,11 @@ function App(){
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const jsonProducts = await getProducts('https://dummyjson.com/products');
-      setProducts(jsonProducts.products);
+      await getProducts('https://dummyjson.com/products');
     };
     void fetchProducts();
     setLoadingFetch(true);
   }, [retryConnection]);
-
 
   const withProducts = (page: React.ReactNode) =>
     loadingFetch ? (
@@ -125,6 +123,17 @@ function App(){
               <CartPage/>
             }
           />
+          <Route 
+          path="/checkout"
+          element={
+              <CheckoutPage/>
+          }
+          />
+          <Route
+          path="/order-confirmation"
+          element={
+            <OrderConfirmationPage/>
+          }/>
           <Route
           path="*"
           element={
@@ -138,3 +147,4 @@ function App(){
 }
 
 export default App;
+
